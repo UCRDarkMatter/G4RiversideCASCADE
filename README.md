@@ -1,16 +1,16 @@
-# G4CASCADE
+# G4RiversideCASCADE
 
-G4CASCADE is an extension for Geant4 that simulates de-excitation following thermal neutron capture. It models the process of randomly moving down the level structure of isotopes according to branching ratios, emitting gamma rays based on energy differences between levels. The level structure and branching ratios for each isotope are stored in the "CapGamData" database.
+G4RiversideCASCADE is an extension for Geant4 that simulates de-excitation following thermal neutron capture. It models the process of randomly moving down the level structure of isotopes according to branching ratios, emitting gamma rays based on energy differences between levels. The level structure and branching ratios for each isotope are stored in the "CapGamData" database.
 
 ## Compatibility
 
-This version of G4CASCADE is designed for Geant4-10.7.4. Compatability with other versions is not guaranteed.
+This version of G4RiversideCASCADE is designed for Geant4-10.7.4. Compatability with other versions is not guaranteed.
 
 ## Getting Started
 
-This tutorial assumes basic knowledge of Linux/Unix and Geant4. If you have never used Geant4 before, try running some of the centrally provided example code before using G4CASCADE. Tutorials on how to do this can be found online.
+This tutorial assumes basic knowledge of Linux/Unix and Geant4. If you have never used Geant4 before, try running some of the centrally provided example code before using G4RiversideCASCADE. Tutorials on how to do this can be found online.
 
-1. **Source the Configuration File**: Before using G4CASCADE, source the file `configCASCADE.sh`.
+1. **Source the Configuration File**: Before using G4RiversideCASCADE, source the file `configCASCADE.sh`.
 2. **Set Environment Variables**: Ensure the environment variable `CAPGAM_DATA_DIR` is set to the correct location of `CapGamData`.
 
 ## Commands
@@ -19,25 +19,25 @@ This tutorial assumes basic knowledge of Linux/Unix and Geant4. If you have neve
 - `/process/had/particle_hp/use_raw_excitation [true/false]`: Sets the value of `G4NEUTRONHP_USE_RAW_EXCITATION`. For best relative intensity agreement, set to false.
 - `/process/had/particle_hp/do_unplaced [true/false]`: Sets the value of `G4NEUTRONHP_DO_UNPLACED`. For best relative intensity agreement, set to false.
 
-## Running G4CASCADE with an Example
+## Running G4RiversideCASCADE with an Example
 
-1. Ensure the example uses the high-precision neutron capture model (HP). Otherwise G4CASCADE will not be used.
+1. Ensure the example uses the high-precision neutron capture model (HP). Otherwise G4RiversideCASCADE will not be used.
 2. Run the example as you normally would in its directory.
 3. Copy the example directory (e.g., `examples/extended/hadronic/Hadr03`) to a different directory where it can be modified.
-4. Place all the files from G4CASCADE’s `src` folder into the `/src` directory of the example.
-5. Place all the files from G4CASCADE’s `include` folder into the `/include` directory of the example.
+4. Place all the files from G4RiversideCASCADE’s `src` folder into the `/src` directory of the example.
+5. Place all the files from G4RiversideCASCADE’s `include` folder into the `/include` directory of the example.
 6. Compile the example by navigating to the main example directory (e.g., `Hadr03`) and running the command `make`. The example should automatically compile the new files and use them instead of the default Geant files.
 
-## Using G4CASCADE with Other Geant4 Programs
+## Using G4RiversideCASCADE with Other Geant4 Programs
 
-1. Place all the files from G4CASCADE’s `src` folder into the `/src` directory of your project and ensure this directory is properly included in `CMakeLists.txt`.
-2. Place all the files from G4CASCADE’s `include` folder into the `/include` directory and ensure this directory is included in `CMakeLists.txt`.
+1. Place all the files from G4RiversideCASCADE’s `src` folder into the `/src` directory of your project and ensure this directory is properly included in `CMakeLists.txt`.
+2. Place all the files from G4RiversideCASCADE’s `include` folder into the `/include` directory and ensure this directory is included in `CMakeLists.txt`.
 3. Make sure your project uses a physics list that includes the high-precision neutron capture model.
-4. Build and compile your project with G4CASCADE using CMake.
+4. Build and compile your project with G4RiversideCASCADE using CMake.
 
 ## Notes
 
-- Check G4CASCADE's agreement/accuracy for the isotope(s) you're simulating.
+- Check G4RiversideCASCADE's agreement/accuracy for the isotope(s) you're simulating.
 - To prevent CASCADE from simulating a certain isotope, remove that isotope’s file from `CapGamData`. Geant4 will then use its default methods to simulate neutron capture for this isotope.
 
 ## CapGamData Directory
@@ -55,16 +55,16 @@ The elements of each array are preceded by the size of the array in the .bin fil
 
 ## Environment Variables
 
-- `G4NEUTRONHP_USE_CASCADE`: Set to `1` (true) to use G4CASCADE.
+- `G4NEUTRONHP_USE_CASCADE`: Set to `1` (true) to use G4RiversideCASCADE.
 - `G4NEUTRONHP_USE_RAW_EXCITATION`: Set to `1` (true) to use the excitation energy of the nucleus post-capture as in G4ParticleHPCaptureFS plus a correction factor. Set to `0` (false) for a fixed excitation energy.
 - `G4NEUTRONHP_DO_UNPLACED`: Set to `1` (true) to simulate unplaced gammas in the ENSDF nuclear level structure. This will require the use of Photon Evaporation to de-excite further. Set to `0` (false) to ignore unplaced gammas.
 - `CAPGAM_DATA_DIR`: Set the directory of the CapGamData database.
 
 ## Documentation and Contact
 
-For information about how to manually modify the database and for documentation of G4CASCADE’s effectiveness for all available isotopes (except 17-36), see the `Supplemental` folder and its README file.
+For information about how to manually modify the database and for documentation of G4RiversideCASCADE’s effectiveness for all available isotopes (except 17-36), see the `Supplemental` folder and its README file.
 
-For more information about G4CASCADE, contact Leo Weimer at ljw00010 [at] mix.wvu.edu.
+For more information about G4RiversideCASCADE, contact Leo Weimer at ljw00010 [at] mix.wvu.edu.
 
 ## Acknowledgements
 
