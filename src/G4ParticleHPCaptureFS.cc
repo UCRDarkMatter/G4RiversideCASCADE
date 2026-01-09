@@ -47,10 +47,10 @@
 #include "G4IonTable.hh" 
 #include "G4ParticleHPDataUsed.hh"
 
-//Added for CASCADE:
-#include "G4CASCADE.hh"
+//Added for G4RiversideCASCADE:
+#include "G4RiversideCASCADE.hh"
 
-G4CASCADE* cascade = new G4CASCADE();
+G4RiversideCASCADE* riversideCascade = new G4RiversideCASCADE();
 
   G4HadFinalState * G4ParticleHPCaptureFS::ApplyYourself(const G4HadProjectile & theTrack)
   {
@@ -86,19 +86,19 @@ G4CASCADE* cascade = new G4CASCADE();
     // Sample the photons
     G4ReactionProductVector * thePhotons = 0;
 
-    //Begin addition for G4CASCADE
+    //Begin addition for G4RiversideCASCADE
 
-    //use G4CASCADE if CASCADE has data and environment variable to use CASCADE is set to 1
-    if (std::stod(std::getenv("G4NEUTRONHP_USE_CASCADE")) == 1 and cascade->HasData(static_cast<G4int>(theBaseZ), static_cast<G4int>(theBaseA+1)))
+    //use G4RiversideCASCADE if it has data and environment variable to use it is set to 1
+    if (std::stod(std::getenv("G4NEUTRONHP_USE_RIVERSIDE_CASCADE")) == 1 and riversideCascade->HasData(static_cast<G4int>(theBaseZ), static_cast<G4int>(theBaseA+1)))
     {
       G4ThreeVector aCMSMomentum = theNeutron.GetMomentum()+theTarget.GetMomentum();
       G4LorentzVector p4(aCMSMomentum, theTarget.GetTotalEnergy() + theNeutron.GetTotalEnergy());
       G4Fragment nucleus(static_cast<G4int>(theBaseA+1), static_cast<G4int>(theBaseZ) ,p4);
 
       thePhotons = new G4ReactionProductVector;
-      thePhotons = cascade->GetGammas(nucleus, std::stod(std::getenv("G4NEUTRONHP_USE_RAW_EXCITATION")) == 1, std::stod(std::getenv("G4NEUTRONHP_DO_UNPLACED")) == 1);
+      thePhotons = riversideCascade->GetGammas(nucleus, std::stod(std::getenv("G4NEUTRONHP_USE_RAW_EXCITATION")) == 1, std::stod(std::getenv("G4NEUTRONHP_DO_UNPLACED")) == 1);
 
-    }//End addition for G4CASCADE
+    }//End addition for G4RiversideCASCADE
 
     else if ( HasFSData() && !G4ParticleHPManager::GetInstance()->GetUseOnlyPhotoEvaporation() ) 
     { 
