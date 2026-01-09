@@ -1,4 +1,4 @@
-# Supplemental Information for G4CASCADE
+# Supplemental Information for G4RiversideCASCADE
 
 ## resStats.txt
 
@@ -7,17 +7,17 @@ The file `resStats.txt` contains information describing the level of agreement b
 - **Ave Res**: The average residual (difference) between a model and ENSDF over all energies.
 - **Max Res**: The highest residual for that model and isotope.
 
-These values are given for NDL (stock model), Photon Evaporation (stock model), CASCADE without unplaced gammas, and CASCADE with unplaced gammas (u). Better agreement is indicated by lower values of Ave Res and Max Res. Note that there is no residual information for 17-36, as this isotope doesn’t have valid CapGam spectrum data for comparison, though it can still be simulated by CASCADE.
+These values are given for NDL (stock model), Photon Evaporation (stock model), Riverside CASCADE without unplaced gammas, and Riverside CASCADE with unplaced gammas (u). Better agreement is indicated by lower values of Ave Res and Max Res. Note that there is no residual information for 17-36, as this isotope doesn’t have valid CapGam spectrum data for comparison, though it can still be simulated by Riverside CASCADE.
 
 ## Graphs Folder
 
-The `Graphs` folder contains relative intensity spectrum comparisons for several G4 models, including this one, vs. ENSDF. These graphs exist for each isotope simulated by CASCADE with the exception of 17-36. The x axis on the graphs (energy) is capped at 10 MeV, but many isotopes have gammas >10 MeV. These gammas are not shown on the graph. Below each graph is a residual plot which shows the residual for each model and ENSDF for each energy channel.
+The `Graphs` folder contains relative intensity spectrum comparisons for several G4 models, including this one, vs. ENSDF. These graphs exist for each isotope simulated by Riverside CASCADE with the exception of 17-36. The x axis on the graphs (energy) is capped at 10 MeV, but many isotopes have gammas >10 MeV. These gammas are not shown on the graph. Below each graph is a residual plot which shows the residual for each model and ENSDF for each energy channel.
 
 ## Level Structure Schematic
 
 The level structure schematic in `Supplemental` shows how the nuclear level structure is stored in a 3D vector of doubles. The large gray box represents the entire 3D vector for the level structure, the mid-sized blue boxes represent 2D vectors, the small green boxes represent 1D vectors, and the white boxes represent doubles. The yellow boxes are excluded from the 3D vector, and are only present in the binary file. The arrows represent the order in which the data is written in the binary file. All values (including emission type) are stored in units of keV. Emission types are as follows:
 
-- `0`: No emission (not in current CASCADE version, but in older versions)
+- `0`: No emission (not in current Riverside CASCADE version, but in older versions)
 - `1`: Gamma
 - `2`: Electron
 - `-1`: Unplaced gamma
@@ -59,7 +59,7 @@ verbose=(integer)
 
 ## SBTranslator
 
-`SBTranslator` translates from level structure `.txt` files into `.bin` files that G4CASCADE can use.
+`SBTranslator` translates from level structure `.txt` files into `.bin` files that G4RiversideCASCADE can use.
 
 ### Running SBTranslator
 
@@ -92,5 +92,5 @@ Here's Carbon 13 as an example:
 	 - 3089.45, 0.16
 	 - 0, 67.47
 ~~~
-Energy values are in units of keV. Branching ratios are normalized by CASCADE during execution.
-Using these `.txt` files, the database can be manually edited. This is generally not recommended, however, as CASCADE is very particular about the numbers in these files. If, for example, you write a transition to a level with energy “642.76”, but the level actually has energy “642.761”, CASCADE will output a warning and exit. CASCADE will crash if there are levels which it cannot de-excite from.
+Energy values are in units of keV. Branching ratios are normalized by Riverside CASCADE during execution.
+Using these `.txt` files, the database can be manually edited. This is generally not recommended, however, as Riverside CASCADE is very particular about the numbers in these files. If, for example, you write a transition to a level with energy “642.76”, but the level actually has energy “642.761”, Riverside CASCADE will output a warning and exit. Riverside CASCADE will crash if there are levels which it cannot de-excite from.
