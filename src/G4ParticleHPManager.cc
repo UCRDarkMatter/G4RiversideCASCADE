@@ -319,13 +319,13 @@ void G4ParticleHPManager::RegisterInelasticFinalStates( const G4ParticleDefiniti
    theInelasticFSs.insert ( std::pair<const G4ParticleDefinition*,std::vector<G4ParticleHPChannelList*>*>( particle , val ) ); 
 }
 
-//UseCASCADE, UseRawExcitation, and doUnplaced were added for G4CASCADE
+//UseRiversideCASCADE, UseRawExcitation, and doUnplaced were added for G4RiversideCASCADE
 void G4ParticleHPManager::DumpSetting() {
   G4cout << G4endl
          << "=======================================================" << G4endl
          << "======       ParticleHP Physics Parameters     ========" << G4endl
          << "=======================================================" << G4endl
-         << " UseCASCADE ?              " << std::getenv("G4NEUTRONHP_USE_CASCADE") << G4endl
+         << " UseRiversideCASCADE ?              " << std::getenv("G4NEUTRONHP_USE_RIVERSIDE_CASCADE") << G4endl
          << " UseRawExcitation ?        " << std::getenv("G4NEUTRONHP_USE_RAW_EXCITATION") << G4endl
          << " DoUnplaced ?              " << std::getenv("G4NEUTRONHP_DO_UNPLACED") << G4endl
          << " UseOnlyPhotoEvaporation ? " << USE_ONLY_PHOTONEVAPORATION << G4endl
