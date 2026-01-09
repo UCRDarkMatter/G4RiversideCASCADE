@@ -1,8 +1,8 @@
 /********************************************************************************
- *  G4CASCADE: Geant4 Extension for Neutron Capture Gamma De-Excitation    *
+ *  G4RiversideCASCADE: Geant4 Extension for n-Capture Gamma De-Excitation      *
  *                                                                              *
  *  Description:                                                                *
- *  G4CASCADE is a Geant4 extension designed to handle the de-excitation   *
+ *  G4RiversideCASCADE is a Geant4 extension designed to handle de-excitation   *
  *  of a nucleus excited by a neutron capture event. It utilizes basic level    *
  *  structure data from the CapGam library to generate gamma energies and       *
  *  simulate the de-excitation process.                                         *
@@ -18,20 +18,20 @@
  *  To configure environment variables, please source configCASCADE.sh     *
  ********************************************************************************/
 
-#include "G4CASCADE.hh"
+#include "G4RiversideCASCADE.hh"
 
 using namespace std;
 
 G4RDShellData* shellDat;
 
-G4CASCADE::G4CASCADE() { 
+G4RiversideCASCADE::G4RiversideCASCADE() { 
   shellDat = new G4RDShellData;
   shellDat->LoadData("/fluor/binding");
 }
 
-G4CASCADE::~G4CASCADE() { }
+G4RiversideCASCADE::~G4RiversideCASCADE() { }
 
-G4ReactionProductVector* G4CASCADE::GetGammas(G4Fragment nucleus, G4bool UseRawExcitation, G4bool doUnplaced)
+G4ReactionProductVector* G4RiversideCASCADE::GetGammas(G4Fragment nucleus, G4bool UseRawExcitation, G4bool doUnplaced)
 {
   //Declare and initialize result vector, level data, excitation energy, and highestObtainableLevel
   G4ReactionProductVector* theResult = new G4ReactionProductVector;
@@ -213,7 +213,7 @@ G4ReactionProductVector* G4CASCADE::GetGammas(G4Fragment nucleus, G4bool UseRawE
 }
 
 //Method to check if CASCADE has data for a particular isotope
-bool G4CASCADE::HasData(G4int Z, G4int A)
+bool G4RiversideCASCADE::HasData(G4int Z, G4int A)
 {
   G4String dataDir = std::getenv("CAPGAM_DATA_DIR");
   G4String name = dataDir + "/" + std::to_string(Z) + "-" + std::to_string(A) + ".bin";
@@ -222,7 +222,7 @@ bool G4CASCADE::HasData(G4int Z, G4int A)
 }
 
 //method to retrieve level data from CapGamData directory
-vector<vector<vector<G4double>>> G4CASCADE::GetLevels(G4int Z, G4int A)
+vector<vector<vector<G4double>>> G4RiversideCASCADE::GetLevels(G4int Z, G4int A)
 {
   vector<vector<vector<G4double>>> readVector;
 
@@ -254,7 +254,7 @@ vector<vector<vector<G4double>>> G4CASCADE::GetLevels(G4int Z, G4int A)
 }
 
 //Method to generate a G4ThreeVector with a random direction
-G4ThreeVector G4CASCADE::GetRandomDirection()
+G4ThreeVector G4RiversideCASCADE::GetRandomDirection()
 {
   G4double costheta = 2.*(G4UniformRand())-1.;
   G4double theta = std::acos(costheta);
