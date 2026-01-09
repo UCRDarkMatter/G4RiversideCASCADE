@@ -24,11 +24,11 @@
 
 using namespace std;
 
-class G4CASCADE
+class G4RiversideCASCADE
 {
   public:
-    G4CASCADE();
-   ~G4CASCADE();
+    G4RiversideCASCADE();
+   ~G4RiversideCASCADE();
 
     bool HasData(G4int Z, G4int A);
     vector<vector<vector<G4double>>> GetLevels(G4int Z, G4int A);
