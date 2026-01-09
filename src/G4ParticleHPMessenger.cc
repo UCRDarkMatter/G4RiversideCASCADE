@@ -30,8 +30,8 @@
 #include "G4UIcmdWithAString.hh"
 #include "G4UIcmdWithAnInteger.hh"
 
-//Added for G4CASCADE:
-G4UIcmdWithAString* CASCADECmd;
+//Added for G4RiversideCASCADE:
+G4UIcmdWithAString* RiversideCASCADECmd;
 G4UIcmdWithAString* UseRawExcitationCmd;
 G4UIcmdWithAString* DoUnplacedCmd;
 
@@ -41,23 +41,23 @@ G4ParticleHPMessenger::G4ParticleHPMessenger( G4ParticleHPManager* man )
    ParticleHPDir = new G4UIdirectory( "/process/had/particle_hp/" );
    ParticleHPDir->SetGuidance( "UI commands of ParticleHP" );
 
-   //Added for G4CASCADE
-   CASCADECmd = new G4UIcmdWithAString("/process/had/particle_hp/use_CASCADE",this);
-   CASCADECmd->SetGuidance("Use CASCADE model when data is available.");
-   CASCADECmd->SetParameterName("choice",false);
-   CASCADECmd->SetCandidates("true false");
-   CASCADECmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+   //Added for G4RiversideCASCADE
+   RiversideCASCADECmd = new G4UIcmdWithAString("/process/had/particle_hp/use_riverside_CASCADE",this);
+   RiversideCASCADECmd->SetGuidance("Use Riverside CASCADE model when data is available.");
+   RiversideCASCADECmd->SetParameterName("choice",false);
+   RiversideCASCADECmd->SetCandidates("true false");
+   RiversideCASCADECmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
-   //Added for G4CASCADE
+   //Added for G4RiversideCASCADE
    UseRawExcitationCmd = new G4UIcmdWithAString("/process/had/particle_hp/use_raw_excitation",this);
-   UseRawExcitationCmd->SetGuidance("Use the raw excitation energy of the nucleus in CASCADE, may cause relative intensity issues");
+   UseRawExcitationCmd->SetGuidance("Use the raw excitation energy of the nucleus in Riverside CASCADE, may cause relative intensity issues");
    UseRawExcitationCmd->SetParameterName("choice",false);
    UseRawExcitationCmd->SetCandidates("true false");
    UseRawExcitationCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
-   //Added for G4CASCADE
+   //Added for G4RiversideCASCADE
    DoUnplacedCmd = new G4UIcmdWithAString("/process/had/particle_hp/do_unplaced",this);
-   DoUnplacedCmd->SetGuidance("Use gammas from CASCADE level structure data that couldn't be placed in the level structure with certainty. May result in relative intensity problems.");
+   DoUnplacedCmd->SetGuidance("Use gammas from Riverside CASCADE level structure data that couldn't be placed in the level structure with certainty. May result in relative intensity problems.");
    DoUnplacedCmd->SetParameterName("choice",false);
    DoUnplacedCmd->SetCandidates("true false");
    DoUnplacedCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
@@ -118,8 +118,8 @@ G4ParticleHPMessenger::~G4ParticleHPMessenger()
 {
    delete ParticleHPDir;
 
-   //Added for G4CASCADE
-   delete CASCADECmd;
+   //Added for G4RiversideCASCADE
+   delete RiversideCASCADECmd;
    delete UseRawExcitationCmd;
    delete DoUnplacedCmd;
 
@@ -138,12 +138,12 @@ void G4ParticleHPMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
    G4bool bValue=false;
    if ( newValue == "true" ) bValue=true;
 
-   //Added for G4CASCADE
-   if ( command == CASCADECmd ) { 
+   //Added for G4RiversideCASCADE
+   if ( command == RiversideCASCADECmd ) { 
       if(bValue == 1){
-        putenv("G4NEUTRONHP_USE_CASCADE=1");
+        putenv("G4NEUTRONHP_USE_RIVERSIDE_CASCADE=1");
       }else {
-        putenv("G4NEUTRONHP_USE_CASCADE=0");
+        putenv("G4NEUTRONHP_USE_RIVERSIDE_CASCADE=0");
       }
    }
    if( command == UseRawExcitationCmd ) { 
