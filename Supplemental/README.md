@@ -9,9 +9,9 @@ The file `resStats.txt` contains information describing the level of agreement b
 
 These values are given for NDL (stock model), Photon Evaporation (stock model), Riverside CASCADE without unplaced gammas, and Riverside CASCADE with unplaced gammas (u). Better agreement is indicated by lower values of Ave Res and Max Res. Note that there is no residual information for 17-36, as this isotope doesn’t have valid CapGam spectrum data for comparison, though it can still be simulated by Riverside CASCADE.
 
-## Graphs Folder
+## GammaSpectrumComparisons Folder
 
-The `Graphs` folder contains relative intensity spectrum comparisons for several G4 models, including this one, vs. ENSDF. These graphs exist for each isotope simulated by Riverside CASCADE with the exception of 17-36. The x axis on the graphs (energy) is capped at 10 MeV, but many isotopes have gammas >10 MeV. These gammas are not shown on the graph. Below each graph is a residual plot which shows the residual for each model and ENSDF for each energy channel.
+The `GammaSpectrumComparisons` folder contains relative intensity spectrum comparisons for several models, including this one, vs. ENSDF. These graphs exist for each isotope simulated by Riverside CASCADE with the exception of 17-36. The x axis on the graphs (energy) is capped at 10 MeV, but many isotopes have gammas >10 MeV. These gammas are not shown on the graph. Below each graph is a residual plot which shows the residual for each model and ENSDF for each energy channel.
 
 ## Level Structure Schematic
 
