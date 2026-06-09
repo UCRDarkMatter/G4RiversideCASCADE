@@ -1,4 +1,4 @@
-# About this branch
+# About This Branch
 
 This is a *HIGHLY EXPERIMENTAL* branch of G4RiversideCASCADE that is modified to work with Geant4-11. It was tested on G4-11.0.1, and it is not guaranteed to work with other versions. There are known issues with this branch, including issues with printout of tracing, use of environment variables, and scope issues. For more information, please contact ljw00010 [at] mix.wvu.edu.
 
