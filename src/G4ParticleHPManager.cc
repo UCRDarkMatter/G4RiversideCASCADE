@@ -38,7 +38,7 @@
 #include "G4HadronicException.hh"
 #include "G4Exception.hh"
 
-G4ParticleHPManager* G4ParticleHPManager::instance = 0;
+G4ParticleHPManager* G4ParticleHPManager::instance = nullptr;
 
 G4ParticleHPManager::G4ParticleHPManager()
 : verboseLevel(1)
@@ -49,87 +49,20 @@ G4ParticleHPManager::G4ParticleHPManager()
 ,PRODUCE_FISSION_FRAGMENTS(false)
 ,USE_WENDT_FISSION_MODEL(false)
 ,USE_NRESP71_MODEL(false)
-,theElasticCrossSections(0)
-,theCaptureCrossSections(0)
-,theFissionCrossSections(0)
-,theElasticFSs(0)
-,theCaptureFSs(0)
-,theFissionFSs(0)
-,theTSCoherentCrossSections(0)
-,theTSIncoherentCrossSections(0)
-,theTSInelasticCrossSections(0)
-,theTSCoherentFinalStates(0)
-,theTSIncoherentFinalStates(0)
-,theTSInelasticFinalStates(0)
+,theElasticCrossSections(nullptr)
+,theCaptureCrossSections(nullptr)
+,theFissionCrossSections(nullptr)
+,theElasticFSs(nullptr)
+,theCaptureFSs(nullptr)
+,theFissionFSs(nullptr)
+,theTSCoherentCrossSections(nullptr)
+,theTSIncoherentCrossSections(nullptr)
+,theTSInelasticCrossSections(nullptr)
+,theTSCoherentFinalStates(nullptr)
+,theTSIncoherentFinalStates(nullptr)
+,theTSInelasticFinalStates(nullptr)
 {
    messenger = new G4ParticleHPMessenger( this );
-   // The rest of this method will be removed in G4 11.0
-   if ( std::getenv( "G4NEUTRONHP_DO_NOT_ADJUST_FINAL_STATE" ) ||
-	std::getenv( "G4PHP_DO_NOT_ADJUST_FINAL_STATE" ) ) {
-     DO_NOT_ADJUST_FINAL_STATE = true;
-     G4ExceptionDescription ed;
-     ed << "Environmental variables G4NEUTRONHP_DO_NOT_ADJUST_FINAL_STATE and \n"
-        << "G4PHP_DO_NOT_ADJUST_FINAL_STATE are valid but deprecated and will be replaced \n"
-	<< "with the UI command: /process/had/particle_hp/do_not_adjust_final_state \n"
-        << "in the next major release, Geant4 version 11.0";
-     G4Exception( "G4ParticleHPManager ", "HP_MAN_165", JustWarning, ed );
-   }
-   if ( std::getenv( "G4NEUTRONHP_USE_ONLY_PHOTONEVAPORATION" ) ) {
-     USE_ONLY_PHOTONEVAPORATION = true;
-     G4ExceptionDescription ed;
-     ed << "Environmental variable G4NEUTRONHP_USE_ONLY_PHOTONEVAPORATION \n"
-        << "is valid but deprecated and will be replaced with the UI command: \n" 
-        << "/process/had/particle_hp/use_photo_evaporation \n"
-        << "in the next major release, Geant4 version 11.0";
-     G4Exception( "G4ParticleHPManager ", "HP_MAN_166", JustWarning, ed );
-   }
-   if ( std::getenv( "G4NEUTRONHP_NEGLECT_DOPPLER" ) ||
-	std::getenv( "G4PHP_NEGLECT_DOPPLER" ) ) {
-     NEGLECT_DOPPLER = true;
-     G4ExceptionDescription ed;
-     ed << "Environmental variables G4NEUTRONHP_NEGLECT_DOPPLER and G4PHP_NEGLECT_DOPPLER \n"
-        << "are valid but deprecated and will be replaced with the UI command: \n" 
-        << "/process/had/particle_hp/neglect_Doppler_broadening \n"
-        << "in the next major release, Geant4 version 11.0";
-     G4Exception( "G4ParticleHPManager ", "HP_MAN_167", JustWarning, ed );
-   }
-   if ( std::getenv( "G4NEUTRONHP_SKIP_MISSING_ISOTOPES" ) ) {
-     SKIP_MISSING_ISOTOPES = true;
-     G4ExceptionDescription ed;
-     ed << "Environmental variable G4NEUTRONHP_SKIP_MISSING_ISOTOPES \n"
-        << "is valid but deprecated and will be replaced with the UI command: \n" 
-        << "/process/had/particle_hp/skip_missing_isotopes \n"
-        << "in the next major release, Geant4 version 11.0";
-     G4Exception( "G4ParticleHPManager ", "HP_MAN_168", JustWarning, ed );
-   }
-   if ( std::getenv( "G4NEUTRONHP_PRODUCE_FISSION_FRAGMENTS" ) ) {
-     PRODUCE_FISSION_FRAGMENTS = true;
-     G4ExceptionDescription ed;
-     ed << "Environmental variable G4NEUTRONHP_PRODUCE_FISSION_FRAGMENTS \n"
-        << "is valid but deprecated and will be replaced with the UI command: \n" 
-        << "/process/had/particle_hp/produce_fission_fragment \n"
-        << "in the next major release, Geant4 version 11.0";
-     G4Exception( "G4ParticleHPManager ", "HP_MAN_169", JustWarning, ed );     
-   }
-   if ( std::getenv( "G4NEUTRON_HP_USE_WENDT_FISSION_MODEL" ) ) {
-     USE_WENDT_FISSION_MODEL = true;
-     // Make sure both fission fragment models are not active at same time
-     PRODUCE_FISSION_FRAGMENTS = false;
-     G4ExceptionDescription ed;
-     ed << "Environmental variable G4NEUTRON_HP_USE_WENDT_FISSION_MODEL \n"
-        << "is valid but deprecated and will be replaced with the UI command: \n" 
-        << "/process/had/particle_hp/use_Wendt_fission_model \n"
-        << "in the next major release, Geant4 version 11.0";
-     G4Exception( "G4ParticleHPManager ", "HP_MAN_170", JustWarning, ed );     
-   }
-   if ( std::getenv( "G4PHP_USE_NRESP71_MODEL" ) ) {
-     USE_NRESP71_MODEL = true;
-     G4ExceptionDescription ed;
-     ed << "Environmental variable G4PHP_USE_NRESP71_MODEL is valid but deprecated and \n"
-        << "will be replaced with the UI command: /process/had/particle_hp/use_NRESP71_model \n"
-        << "in the next major release, Geant4 version 11.0";
-     G4Exception( "G4ParticleHPManager ", "HP_MAN_171", JustWarning, ed );     
-   }
 }
 
 G4ParticleHPManager::~G4ParticleHPManager()
@@ -140,7 +73,7 @@ G4ParticleHPManager::~G4ParticleHPManager()
 G4ParticleHPManager* G4ParticleHPManager::GetInstance()
 {
   static G4ParticleHPManager manager;
-  if (!instance)
+  if (instance == nullptr)
   {
     instance = &manager;
   }
@@ -171,7 +104,7 @@ void G4ParticleHPManager::GetDataStream( G4String filename , std::istringstream&
    if ( in->good() )
    {
       // Use the compressed file 
-      G4int file_size = in->tellg();
+      std::streamoff file_size = in->tellg();
       in->seekg( 0 , std::ios::beg );
       Bytef* compdata = new Bytef[ file_size ];
 
@@ -200,7 +133,7 @@ void G4ParticleHPManager::GetDataStream( G4String filename , std::istringstream&
       std::ifstream thefData( filename , std::ios::in | std::ios::ate );
       if ( thefData.good() )
       {
-         G4int file_size = thefData.tellg();
+         std::streamoff file_size = thefData.tellg();
          thefData.seekg( 0 , std::ios::beg );
          char* filedata = new char[ file_size ];
          while ( thefData )
@@ -285,8 +218,7 @@ void G4ParticleHPManager::DumpDataSource()
 {
 
    G4cout << "Data source of this Partile HP calculation are " << G4endl;
-   for (  std::map< G4String , G4String >::iterator 
-          it = mDataEvaluation.begin() ; it != mDataEvaluation.end() ; it++ )
+   for (auto it = mDataEvaluation.cbegin(); it != mDataEvaluation.cend(); ++it)
    {
       G4cout << it->first << " " << it->second << G4endl;
    }
@@ -298,7 +230,7 @@ G4PhysicsTable* G4ParticleHPManager::GetInelasticCrossSections(const G4ParticleD
    if ( theInelasticCrossSections.end() !=  theInelasticCrossSections.find( particle ) )
       return theInelasticCrossSections.find( particle )->second; 
    else 
-      return 0; 
+      return nullptr; 
 }
 
 void G4ParticleHPManager::RegisterInelasticCrossSections( const G4ParticleDefinition* particle, G4PhysicsTable* val )
@@ -311,7 +243,7 @@ std::vector<G4ParticleHPChannelList*>* G4ParticleHPManager::GetInelasticFinalSta
    if ( theInelasticFSs.end() != theInelasticFSs.find( particle ) )
       return theInelasticFSs.find( particle )->second;
    else 
-      return 0;
+      return nullptr;
 }
 
 void G4ParticleHPManager::RegisterInelasticFinalStates( const G4ParticleDefinition* particle , std::vector<G4ParticleHPChannelList*>* val )
@@ -319,8 +251,9 @@ void G4ParticleHPManager::RegisterInelasticFinalStates( const G4ParticleDefiniti
    theInelasticFSs.insert ( std::pair<const G4ParticleDefinition*,std::vector<G4ParticleHPChannelList*>*>( particle , val ) ); 
 }
 
-//UseCASCADE, UseRawExcitation, and doUnplaced were added for G4CASCADE
-void G4ParticleHPManager::DumpSetting() {
+
+void G4ParticleHPManager::DumpSetting()
+{
   G4cout << G4endl
          << "=======================================================" << G4endl
          << "======       ParticleHP Physics Parameters     ========" << G4endl
@@ -328,7 +261,7 @@ void G4ParticleHPManager::DumpSetting() {
          << " UseCASCADE ?              " << std::getenv("G4NEUTRONHP_USE_CASCADE") << G4endl
          << " UseRawExcitation ?        " << std::getenv("G4NEUTRONHP_USE_RAW_EXCITATION") << G4endl
          << " DoUnplaced ?              " << std::getenv("G4NEUTRONHP_DO_UNPLACED") << G4endl
-         << " UseOnlyPhotoEvaporation ? " << USE_ONLY_PHOTONEVAPORATION << G4endl
+	 << " UseOnlyPhotoEvaporation ? " << USE_ONLY_PHOTONEVAPORATION << G4endl
          << " SkipMissingIsotopes ?     " << SKIP_MISSING_ISOTOPES << G4endl
          << " NeglectDoppler ?          " << NEGLECT_DOPPLER << G4endl
          << " DoNotAdjustFinalState ?   " << DO_NOT_ADJUST_FINAL_STATE << G4endl
@@ -338,3 +271,4 @@ void G4ParticleHPManager::DumpSetting() {
          << "=======================================================" << G4endl
          << G4endl;
 }
+       

@@ -46,16 +46,28 @@
 #include "G4Fragment.hh"
 #include "G4IonTable.hh" 
 #include "G4ParticleHPDataUsed.hh"
+#include "G4PhysicsModelCatalog.hh"
+
 
 //Added for CASCADE:
 #include "G4CASCADE.hh"
 
 G4CASCADE* cascade = new G4CASCADE();
 
+G4ParticleHPCaptureFS::G4ParticleHPCaptureFS()
+
+  {
+    secID = G4PhysicsModelCatalog::GetModelID( "model_NeutronHPCapture" );
+    hasXsec = false; 
+    hasExactMF6 = false;
+    targetMass = 0;
+  }
+
+
   G4HadFinalState * G4ParticleHPCaptureFS::ApplyYourself(const G4HadProjectile & theTrack)
   {
 
-   if ( theResult.Get() == NULL ) theResult.Put( new G4HadFinalState );
+   if ( theResult.Get() == nullptr ) theResult.Put( new G4HadFinalState );
    theResult.Get()->Clear();
 
     G4int i;
@@ -86,8 +98,8 @@ G4CASCADE* cascade = new G4CASCADE();
     // Sample the photons
     G4ReactionProductVector * thePhotons = 0;
 
-    //Begin addition for G4CASCADE
-
+     //Begin addition for G4CASCADE
+    
     //use G4CASCADE if CASCADE has data and environment variable to use CASCADE is set to 1
     if (std::stod(std::getenv("G4NEUTRONHP_USE_CASCADE")) == 1 and cascade->HasData(static_cast<G4int>(theBaseZ), static_cast<G4int>(theBaseA+1)))
     {
@@ -98,7 +110,11 @@ G4CASCADE* cascade = new G4CASCADE();
       thePhotons = new G4ReactionProductVector;
       thePhotons = cascade->GetGammas(nucleus, std::stod(std::getenv("G4NEUTRONHP_USE_RAW_EXCITATION")) == 1, std::stod(std::getenv("G4NEUTRONHP_DO_UNPLACED")) == 1);
 
-    }//End addition for G4CASCADE
+    }
+
+
+//End addition for G4CASCADE
+
 
     else if ( HasFSData() && !G4ParticleHPManager::GetInstance()->GetUseOnlyPhotoEvaporation() ) 
     { 
@@ -124,9 +140,8 @@ G4CASCADE* cascade = new G4CASCADE();
       // T. K. add
       photonEvaporation.SetICM( TRUE );
       G4FragmentVector* products = photonEvaporation.BreakItUp(nucleus);
-      G4FragmentVector::iterator it;
       thePhotons = new G4ReactionProductVector;
-      for(it=products->begin(); it!=products->end(); it++)
+      for(auto it=products->cbegin(); it!=products->cend(); ++it)
       {
         G4ReactionProduct * theOne = new G4ReactionProduct;
         // T. K. add 
@@ -159,10 +174,10 @@ G4CASCADE* cascade = new G4CASCADE();
 
     // Add them to the final state
     G4int nPhotons = 0;
-    nPhotons=thePhotons->size();
+    nPhotons=(G4int)thePhotons->size();
 
 ///*
-   if ( DoNotAdjustFinalState() ) {
+    if ( ! G4ParticleHPManager::GetInstance()->GetDoNotAdjustFinalState() ) {
 //Make at least one photon  
 //101203 TK
     if ( nPhotons == 0 )
@@ -177,7 +192,7 @@ G4CASCADE* cascade = new G4CASCADE();
        G4ThreeVector direction(sinth*std::cos(phi), sinth*std::sin(phi), costheta);
        theOne->SetMomentum(direction);
        thePhotons->push_back(theOne);
-       nPhotons++; // 0 -> 1
+       ++nPhotons; // 0 -> 1
     }
 //One photon case: energy set to Q-value 
 //101203 TK
@@ -225,7 +240,7 @@ G4CASCADE* cascade = new G4CASCADE();
        //theOne->SetMomentum(theMomentum);
        
        theOne->SetMomentum(aMomentum);
-       theResult.Get()->AddSecondary(theOne);
+       theResult.Get()->AddSecondary(theOne, secID);
     }
 
     // Now fill in the gammas.
@@ -235,7 +250,7 @@ G4CASCADE* cascade = new G4CASCADE();
       G4DynamicParticle * theOne = new G4DynamicParticle;
       theOne->SetDefinition(thePhotons->operator[](i)->GetDefinition());
       theOne->SetMomentum(thePhotons->operator[](i)->GetMomentum());
-      theResult.Get()->AddSecondary(theOne);
+      theResult.Get()->AddSecondary(theOne, secID);
       delete thePhotons->operator[](i);
     }
     delete thePhotons; 
@@ -299,7 +314,7 @@ G4CASCADE* cascade = new G4CASCADE();
              G4DynamicParticle * theOne = new G4DynamicParticle;
              theOne->SetDefinition( G4Gamma::Gamma() );
              theOne->SetMomentum( tempVector );
-             theResult.Get()->AddSecondary(theOne);
+             theResult.Get()->AddSecondary(theOne, secID);
           }
 
 //        Add last photon 
@@ -309,7 +324,7 @@ G4CASCADE* cascade = new G4CASCADE();
           G4ThreeVector lastPhoton = -p_photons.vect().unit()*vEPhoton.back();
           p_photons += G4LorentzVector( lastPhoton , lastPhoton.mag() );
           theOne->SetMomentum( lastPhoton );
-          theResult.Get()->AddSecondary(theOne);
+          theResult.Get()->AddSecondary(theOne, secID);
        }
 
 //Add residual 
@@ -318,7 +333,7 @@ G4CASCADE* cascade = new G4CASCADE();
 			       - p_photons.vect();
        theOne->SetDefinition(aRecoil);
        theOne->SetMomentum( aMomentum );
-       theResult.Get()->AddSecondary(theOne);
+       theResult.Get()->AddSecondary(theOne, secID);
 
     }
 //101203TK END

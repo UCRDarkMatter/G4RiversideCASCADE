@@ -157,7 +157,7 @@ G4ReactionProductVector* G4CASCADE::GetGammas(G4Fragment nucleus, G4bool UseRawE
             G4ReactionProduct* newGam = new G4ReactionProduct;
             newGam->SetDefinition( G4Gamma::Gamma() );
             newGam->SetMomentum( (exciteE - levels[levelIndex][c+1][0]) * GetRandomDirection() );
-            theResult->push_back(newGam);
+	    theResult->push_back(newGam);
           }
   	  if(levels[levelIndex][c+1][2] == 2 * CLHEP::keV or (levels[levelIndex][c+1][2] == -2 * CLHEP::keV and doUnplaced)) {
 	    G4ReactionProduct* newEl = new G4ReactionProduct;
