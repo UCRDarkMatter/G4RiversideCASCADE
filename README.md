@@ -65,8 +65,7 @@ The elements of each array are preceded by the size of the array in the .bin fil
 - Inside `src/G4ParticleHPCaptureFS.cc` add `#include "G4ParticleHPManager.hh"` and replaced `if ( DoNotAdjustFinalState() ) {` with `if ( G4ParticleHPManager::GetInstance()->GetDoNotAdjustFinalState() ) {` (line 165)
 - Inside `src/G4RDAugerData.cc` add `const` to the beginning of line 496 `G4Element* element = (*elementVector)[iEl]`;
 - Use `make` command inside the `build` file (you might need to use `mkdir` and create it) 
-- Manually set the variable `G4LEDATA` by using `export G4LEDATA=/usr/local/share/Geant4-11.1.0/data/G4EMLOW8.2` (I'm not sure why I couldn't just source /usr/local/share/Geant4-11.1.0/bin/geant4.sh)
-
+- Manually set the variable `G4LEDATA` by using `export G4LEDATA=/usr/local/share/Geant4-11.1.0/data/G4EMLOW8.2`
 
 ## Documentation and Contact
 
