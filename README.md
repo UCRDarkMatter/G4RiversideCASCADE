@@ -60,6 +60,18 @@ The elements of each array are preceded by the size of the array in the .bin fil
 - `G4NEUTRONHP_DO_UNPLACED`: Set to `1` (true) to simulate unplaced gammas in the ENSDF nuclear level structure. This will require the use of Photon Evaporation to de-excite further. Set to `0` (false) to ignore unplaced gammas.
 - `CAPGAM_DATA_DIR`: Set the directory of the CapGamData database.
 
+## Adapting G4CASCADE for Geant4-11.1.0
+
+The following steps outline how to update the G4CASCADE source code to ensure compatibility with Geant4 version 11.1.0, and how to properly build the project.
+
+From the root of your project directory, make the following modifications:
+1. Inside `src/G4ParticleHPCaptureFS.cc` add `#include "G4ParticleHPManager.hh"` at the top of the file.
+2. Around line 165 of the same file, replace `if ( DoNotAdjustFinalState() ) {` with `if ( G4ParticleHPManager::GetInstance()->GetDoNotAdjustFinalState() ) {`
+3. Inside `src/G4RDAugerData.cc`, add the `const` qualifier to the beginning of line 496: `G4Element* element = (*elementVector)[iEl]`.
+
+Now, create a build directory with `mkdir build`, navigate into it with `cd build`, configure the project with `cmake ..`, and compile with `make`. Before running the executable, you must manually point Geant4 to the low-energy electromagnetic data by running the following command:
+- `export G4LEDATA=/usr/local/share/Geant4-11.1.0/data/G4EMLOW8.2`
+
 ## Documentation and Contact
 
 For information about how to manually modify the database and for documentation of G4RiversideCASCADE’s effectiveness for all available isotopes (except 17-36), see the `Supplemental` folder and its README file.
